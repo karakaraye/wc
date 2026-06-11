@@ -1,18 +1,32 @@
 import { getMatch, formatDate } from '../data/matches';
 
-export default function TicketCard({ ticket, onTransfer, showTransfer = false, variant = 'card', onEdit }) {
+export default function TicketCard({ 
+  ticket, 
+  onTransfer, 
+  showTransfer = false, 
+  variant = 'card', 
+  onEdit,
+  selected = false,
+  onSelect
+}) {
   const match = getMatch(ticket.matchId);
   if (!match) return null;
+
+  const isResale = ticket.status === 'resale';
 
   if (variant === 'row') {
     return (
       <div className="ticket-row-item">
+        <div className="ticket-checkbox-container" onClick={onSelect}>
+          <div className={`ticket-checkbox ${selected ? 'checked' : ''}`}></div>
+        </div>
+        
         <div className="ticket-row-details">
           <div className="ticket-row-subtitle">Ticket Price</div>
           <div className="ticket-row-seat-text">{ticket.seat}</div>
-          <div className="ticket-row-status-msg">
-            <span className="status-dot-amber"></span>
-            This ticket is not printable
+          <div className={`ticket-row-status-msg ${isResale ? 'resale' : ''}`}>
+            <span className={isResale ? 'status-dot-grey' : 'status-dot-amber'}></span>
+            {isResale ? 'This ticket is listed for resale' : 'This ticket is not printable'}
           </div>
         </div>
         <div className="ticket-row-right-panel">

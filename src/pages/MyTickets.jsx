@@ -5,7 +5,7 @@ import TicketCard from '../components/TicketCard';
 import { formatDate } from '../data/matches';
 
 export default function MyTickets() {
-  const { currentUser, matches, updateMatch, updateTicket } = useApp();
+  const { currentUser, matches, updateMatch, updateTicket, transferTicket } = useApp();
   
   // State for the edit match modal
   const [editingMatchId, setEditingMatchId] = useState(null);
@@ -18,6 +18,17 @@ export default function MyTickets() {
   const [matchVenue, setMatchVenue] = useState('');
   const [matchCity, setMatchCity] = useState('');
   const [ticketEdits, setTicketEdits] = useState({});
+
+  // Ticket selection and action state
+  const [selectedTickets, setSelectedTickets] = useState({});
+  const [transferModalOpen, setTransferModalOpen] = useState(false);
+  const [transferMatchId, setTransferMatchId] = useState(null);
+  const [transferEmail, setTransferEmail] = useState('');
+  const [transferStatus, setTransferStatus] = useState(null);
+
+  // Resale flow success modal state
+  const [resaleSuccessOpen, setResaleSuccessOpen] = useState(false);
+  const [resaleCount, setResaleCount] = useState(0);
 
   if (!currentUser) return <Navigate to="/login" replace />;
 
@@ -34,6 +45,13 @@ export default function MyTickets() {
   }, {});
 
   const getMatch = (id) => matches.find((m) => m.id === id);
+
+  const toggleSelectTicket = (ticketId) => {
+    setSelectedTickets((prev) => ({
+      ...prev,
+      [ticketId]: prev[ticketId] === false ? true : false,
+    }));
+  };
 
   const handleEditClick = (matchId) => {
     const match = getMatch(matchId);
@@ -100,6 +118,79 @@ export default function MyTickets() {
     }));
   };
 
+  const handleOpenTransferModal = (matchId) => {
+    setTransferMatchId(matchId);
+    setTransferEmail('');
+    setTransferStatus(null);
+    setTransferModalOpen(true);
+  };
+
+  const handleExecuteTransfer = (e) => {
+    e.preventDefault();
+    if (!transferMatchId || !transferEmail) return;
+
+    const groupTickets = ticketsByMatch[transferMatchId] || [];
+    // Only transfer selected, non-resold tickets
+    const selectedGroupTickets = groupTickets.filter(
+      (t) => selectedTickets[t.id] !== false && t.status !== 'resale'
+    );
+
+    if (selectedGroupTickets.length === 0) {
+      setTransferStatus({ type: 'error', message: 'No active tickets selected for transfer.' });
+      return;
+    }
+
+    let successCount = 0;
+    let lastError = '';
+
+    selectedGroupTickets.forEach((t) => {
+      const recipientName = transferEmail.split('@')[0];
+      const result = transferTicket(t.id, transferEmail, recipientName);
+      if (result.ok) {
+        successCount++;
+      } else {
+        lastError = result.error;
+      }
+    });
+
+    if (successCount > 0) {
+      setTransferStatus({
+        type: 'success',
+        message: `Successfully transferred ${successCount} ticket(s) to ${transferEmail}!`,
+      });
+
+      // Reset selection state for these tickets
+      const cleared = { ...selectedTickets };
+      selectedGroupTickets.forEach((t) => {
+        cleared[t.id] = false;
+      });
+      setSelectedTickets(cleared);
+
+      setTimeout(() => {
+        setTransferModalOpen(false);
+        setTransferStatus(null);
+      }, 1500);
+    } else {
+      setTransferStatus({ type: 'error', message: lastError || 'Failed to transfer tickets.' });
+    }
+  };
+
+  const handleResellClick = (matchId) => {
+    const groupTickets = ticketsByMatch[matchId] || [];
+    const selectedGroupTickets = groupTickets.filter(
+      (t) => selectedTickets[t.id] !== false && t.status !== 'resale'
+    );
+
+    if (selectedGroupTickets.length === 0) return;
+
+    selectedGroupTickets.forEach((t) => {
+      updateTicket(t.id, { status: 'resale' });
+    });
+
+    setResaleCount(selectedGroupTickets.length);
+    setResaleSuccessOpen(true);
+  };
+
   return (
     <div className="page my-tickets-page-redesign">
       {/* Purple Alert Banner */}
@@ -126,7 +217,13 @@ export default function MyTickets() {
               if (!match) return null;
               const groupTickets = ticketsByMatch[matchId];
               const mainCategory = groupTickets[0].category || 'Category 1';
-              
+
+              // Count selected active tickets in this group
+              const activeGroupTickets = groupTickets.filter((t) => t.status !== 'resale');
+              const selectedCount = activeGroupTickets.filter(
+                (t) => selectedTickets[t.id] !== false
+              ).length;
+
               return (
                 <div key={matchId} className="match-group-card">
                   {/* Match Group Header Card */}
@@ -168,18 +265,45 @@ export default function MyTickets() {
                   </div>
                   
                   {/* Tickets Rows List Container */}
-                  <div className="match-group-tickets-container">
+                  <div className="match-group-tickets-container" style={{ paddingBottom: '0px' }}>
                     <div className="match-group-tickets-title">
                       {groupTickets.length} ticket{groupTickets.length !== 1 ? 's' : ''} - {mainCategory} - USD
                     </div>
-                    <div className="ticket-rows-list">
+                    <div className="ticket-rows-list" style={{ paddingBottom: '24px' }}>
                       {groupTickets.map((ticket) => (
                         <TicketCard 
                           key={ticket.id} 
                           ticket={ticket} 
                           variant="row"
+                          selected={selectedTickets[ticket.id] !== false}
+                          onSelect={() => toggleSelectTicket(ticket.id)}
                         />
                       ))}
+                    </div>
+                  </div>
+
+                  {/* Match Group Card Actions Footer Bar */}
+                  <div className="match-group-footer-actions">
+                    <div className="match-group-tickets-count">
+                      {selectedCount} ticket{selectedCount !== 1 ? 's' : ''} selected
+                    </div>
+                    <div className="match-group-buttons">
+                      <button 
+                        type="button" 
+                        className="btn-transfer-group"
+                        onClick={() => handleOpenTransferModal(matchId)}
+                        disabled={selectedCount === 0}
+                      >
+                        TRANSFER TICKET(S)
+                      </button>
+                      <button 
+                        type="button" 
+                        className="btn-resell-group"
+                        onClick={() => handleResellClick(matchId)}
+                        disabled={selectedCount === 0}
+                      >
+                        RESELL
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -389,6 +513,85 @@ export default function MyTickets() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Warning Transfer Modal (Exactly Matching Screenshot) */}
+      {transferModalOpen && (
+        <div className="modal-overlay" style={{ backdropFilter: 'blur(3px)' }}>
+          <div className="modal-dialog" style={{ maxWidth: '480px', borderRadius: '16px', border: 'none' }}>
+            <form onSubmit={handleExecuteTransfer}>
+              <div className="modal-body" style={{ padding: '32px' }}>
+                <h3 style={{ fontSize: '24px', fontWeight: '800', color: '#000000', marginBottom: '16px', lineHeight: '1.2' }}>
+                  Please read carefully before transferring your ticket(s):
+                </h3>
+                <p style={{ fontSize: '12px', color: '#374151', lineHeight: '1.6', marginBottom: '24px' }}>
+                  Transfers are final and no returns, credits or exchanges are available. Transfer recipients may not cancel or return a Ticket to you once accepted. You may not cancel or revoke a transferred Ticket once the transfer is accepted by the Transfer Recipient. By clicking the "Transfer Ticket(s)" button, you are confirming the transfer of your ticket(s) to another person and agree that you have read and accepted the applicable terms of the <span style={{ textDecoration: 'underline', fontWeight: '700' }}>Transfer and Resale Terms</span>. To complete the Ticket Transfer, enter the Transfer Recipient's email address and click "Transfer Ticket(s)".
+                </p>
+
+                <div className="form-field" style={{ marginBottom: '24px' }}>
+                  <label style={{ display: 'block', marginBottom: '8px', fontWeight: '700', fontSize: '13px', color: '#111827' }}>
+                    Transfer Recipient's email address *
+                  </label>
+                  <input 
+                    type="email" 
+                    value={transferEmail} 
+                    onChange={(e) => setTransferEmail(e.target.value)} 
+                    style={{ width: '100%', padding: '14px', borderRadius: '8px', border: '1px solid #d1d5db', fontSize: '15px' }}
+                    required
+                  />
+                </div>
+
+                {transferStatus && (
+                  <div className={`alert alert-${transferStatus.type}`} style={{ marginBottom: '16px', padding: '12px', borderRadius: '6px' }}>
+                    {transferStatus.message}
+                  </div>
+                )}
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <button 
+                    type="submit" 
+                    className="btn"
+                    style={{ background: '#1c1c24', color: '#ffffff', border: 'none', padding: '14px', borderRadius: '8px', fontWeight: '700', fontSize: '13px', letterSpacing: '0.05em', cursor: 'pointer', width: '100%' }}
+                  >
+                    TRANSFER TICKET(S)
+                  </button>
+                  <button 
+                    type="button" 
+                    className="btn" 
+                    onClick={() => {
+                      setTransferModalOpen(false);
+                      setTransferStatus(null);
+                    }}
+                    style={{ background: '#f3f4f6', color: '#000000', border: 'none', padding: '14px', borderRadius: '8px', fontWeight: '700', fontSize: '13px', letterSpacing: '0.05em', cursor: 'pointer', width: '100%' }}
+                  >
+                    CANCEL
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Resale Success Modal */}
+      {resaleSuccessOpen && (
+        <div className="modal-overlay">
+          <div className="modal-dialog" style={{ maxWidth: '400px', textAlign: 'center', padding: '32px', borderRadius: '12px' }}>
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>✅</div>
+            <h3 style={{ fontSize: '20px', fontWeight: '800', marginBottom: '12px', color: '#000000' }}>Listed for Resale</h3>
+            <p style={{ color: '#4b5563', fontSize: '14px', marginBottom: '24px', lineHeight: '1.5' }}>
+              Your selected {resaleCount} ticket{resaleCount !== 1 ? 's have' : ' has'} been successfully listed on the official resale platform.
+            </p>
+            <button 
+              type="button" 
+              className="btn btn-gold btn-block" 
+              onClick={() => setResaleSuccessOpen(false)}
+              style={{ background: '#000000', color: '#ffffff', border: 'none' }}
+            >
+              Close
+            </button>
           </div>
         </div>
       )}
