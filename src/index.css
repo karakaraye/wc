@@ -1,0 +1,1381 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --fifa-navy: #000000;
+  --fifa-navy-light: #1c1c1c;
+  --fifa-gold: #111111;
+  --fifa-gold-light: #333333;
+  --fifa-green: #10b981;
+  --fifa-white: #ffffff;
+  --fifa-gray-100: #f4f6f9;
+  --fifa-gray-200: #e8ecf2;
+  --fifa-gray-400: #8892a0;
+  --fifa-gray-600: #4b5563;
+  --fifa-gray-800: #111827;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.1);
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--fifa-gray-100);
+  color: var(--fifa-gray-800);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content { flex: 1; }
+
+/* Header */
+.site-header {
+  background: var(--fifa-navy);
+  color: var(--fifa-white);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+
+.header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.brand-icon {
+  background: var(--fifa-white);
+  color: var(--fifa-navy);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.05em;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.brand-text { display: flex; flex-direction: column; }
+
+.brand-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.brand-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.04em;
+}
+
+.main-nav {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+}
+
+.main-nav a {
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.75);
+  transition: all 0.2s;
+}
+
+.main-nav a:hover { color: var(--fifa-white); background: rgba(255,255,255,0.08); }
+
+.main-nav a.active {
+  color: var(--fifa-white);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.header-actions { display: flex; align-items: center; gap: 12px; }
+
+.user-menu { display: flex; align-items: center; gap: 12px; }
+
+.user-greeting {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--fifa-white);
+  color: var(--fifa-navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.btn-sm { padding: 7px 14px; font-size: 13px; }
+.btn-lg { padding: 14px 28px; font-size: 16px; }
+.btn-block { width: 100%; }
+
+.btn-primary {
+  background: var(--fifa-navy);
+  color: var(--fifa-white);
+  border-color: var(--fifa-navy);
+}
+.btn-primary:hover { background: var(--fifa-navy-light); }
+
+.btn-gold {
+  background: var(--fifa-gold);
+  color: var(--fifa-white);
+  border-color: var(--fifa-gold);
+}
+.btn-gold:hover { background: var(--fifa-gold-light); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--fifa-navy);
+  border-color: var(--fifa-navy);
+}
+.btn-outline:hover { background: var(--fifa-navy); color: var(--fifa-white); }
+
+.btn-outline-light {
+  background: transparent;
+  color: var(--fifa-white);
+  border-color: rgba(255,255,255,0.5);
+}
+.btn-outline-light:hover { background: rgba(255,255,255,0.1); border-color: var(--fifa-white); }
+
+.btn-ghost {
+  background: transparent;
+  color: rgba(255,255,255,0.8);
+  border-color: transparent;
+}
+.btn-ghost:hover { color: var(--fifa-white); }
+
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Page layout */
+.page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}
+
+.page-header { margin-bottom: 32px; }
+.page-header h1 {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--fifa-navy);
+  letter-spacing: 0.02em;
+  margin-bottom: 8px;
+}
+.page-header p { color: var(--fifa-gray-600); font-size: 16px; }
+.page-header.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.section { margin-bottom: 64px; }
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.section-header h2, .section h2 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--fifa-navy);
+}
+
+.link-arrow { color: var(--fifa-navy); font-weight: 600; font-size: 14px; }
+.link-arrow:hover { color: var(--fifa-gold); }
+
+/* Hero */
+.hero {
+  position: relative;
+  background: var(--fifa-navy);
+  color: var(--fifa-white);
+  border-radius: 0 0 24px 24px;
+  overflow: hidden;
+  margin: -32px -24px 48px;
+  padding: 80px 48px 48px;
+  min-height: 480px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(10,31,68,0.95) 0%, rgba(10,31,68,0.7) 50%, rgba(201,162,39,0.15) 100%),
+    url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1600&q=80') center/cover;
+}
+
+.hero-content { position: relative; max-width: 640px; z-index: 1; }
+
+.hero-badge {
+  display: inline-block;
+  background: var(--fifa-gold);
+  color: var(--fifa-navy);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  letter-spacing: 0.01em;
+}
+
+.hero p {
+  font-size: 18px;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 32px;
+  line-height: 1.7;
+}
+
+.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+
+.hero-stats {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 48px;
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255,255,255,0.15);
+}
+
+.hero-stats div { display: flex; flex-direction: column; }
+.hero-stats strong {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--fifa-gold);
+}
+.hero-stats span { font-size: 13px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* Match cards */
+.match-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.match-card {
+  background: var(--fifa-white);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.match-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.match-card-image {
+  height: 160px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.match-stage {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: var(--fifa-navy);
+  color: var(--fifa-gold);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.match-card-body { padding: 20px; }
+
+.match-teams {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--fifa-navy);
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.match-teams.large { font-size: 28px; margin-bottom: 12px; }
+.match-teams .vs { color: var(--fifa-gray-400); font-size: 0.8em; }
+
+.match-meta, .match-venue {
+  font-size: 13px;
+  color: var(--fifa-gray-600);
+  margin-bottom: 4px;
+}
+
+.match-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--fifa-gray-200);
+}
+
+.match-price {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--fifa-navy);
+}
+
+/* Features */
+.features-section { text-align: center; }
+.features-section h2 { margin-bottom: 40px; }
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+}
+
+.feature-card {
+  background: var(--fifa-white);
+  padding: 32px 24px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  text-align: left;
+}
+
+.feature-num {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--fifa-gold);
+  display: block;
+  margin-bottom: 12px;
+}
+
+.feature-card h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--fifa-navy);
+  margin-bottom: 8px;
+}
+
+.feature-card p { font-size: 14px; color: var(--fifa-gray-600); }
+
+/* Filters */
+.filters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fifa-gray-600);
+}
+
+.filters select {
+  padding: 10px 14px;
+  border: 1px solid var(--fifa-gray-200);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 14px;
+  background: var(--fifa-white);
+  min-width: 180px;
+}
+
+/* Match detail */
+.back-link {
+  display: inline-block;
+  color: var(--fifa-gray-600);
+  font-size: 14px;
+  margin-bottom: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+}
+.back-link:hover { color: var(--fifa-navy); }
+
+.match-detail {
+  background: var(--fifa-white);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.match-detail-hero {
+  height: 280px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.match-detail-content {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 0;
+}
+
+.match-detail-info { padding: 32px; }
+
+.match-city { color: var(--fifa-gray-600); margin-bottom: 20px; }
+
+.info-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+.info-pills span {
+  background: var(--fifa-gray-100);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--fifa-navy);
+}
+
+.purchase-panel {
+  background: var(--fifa-gray-100);
+  padding: 32px;
+  border-left: 1px solid var(--fifa-gray-200);
+}
+
+.purchase-panel h2 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--fifa-navy);
+  margin-bottom: 8px;
+}
+
+.price-display {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--fifa-navy);
+  margin-bottom: 24px;
+}
+.price-display span { font-size: 14px; font-weight: 400; color: var(--fifa-gray-600); }
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  margin-bottom: 16px;
+  border-top: 1px solid var(--fifa-gray-200);
+  font-size: 16px;
+}
+.total-row strong {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--fifa-navy);
+}
+
+/* Tickets */
+.ticket-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.ticket-grid.compact { grid-template-columns: 1fr; }
+
+.ticket-card {
+  background: var(--fifa-white);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  border-left: 4px solid var(--fifa-gold);
+}
+
+.ticket-card-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.ticket-id {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--fifa-gray-400);
+  letter-spacing: 0.04em;
+}
+
+.ticket-category {
+  background: var(--fifa-navy);
+  color: var(--fifa-gold);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.ticket-match h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--fifa-navy);
+  margin: 8px 0 4px;
+}
+
+.ticket-flags { font-size: 20px; }
+.ticket-match p { font-size: 13px; color: var(--fifa-gray-600); }
+.ticket-venue { margin-top: 4px; }
+
+.ticket-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 20px 0;
+  padding: 16px;
+  background: var(--fifa-gray-100);
+  border-radius: var(--radius-sm);
+}
+
+.ticket-details .label {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--fifa-gray-400);
+  margin-bottom: 2px;
+}
+
+.ticket-details span:last-child { font-weight: 600; font-size: 14px; }
+
+/* Transfer */
+.transfer-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 32px;
+  align-items: start;
+}
+
+.step-indicator {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--fifa-gray-200);
+}
+
+.step-indicator span {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fifa-gray-400);
+}
+.step-indicator span.active { color: var(--fifa-navy); }
+
+.transfer-section h2 {
+  font-family: var(--font-display);
+  font-size: 26px;
+  color: var(--fifa-navy);
+  margin-bottom: 20px;
+}
+
+.transfer-form {
+  background: var(--fifa-white);
+  padding: 32px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-top: 24px;
+}
+
+.form-hint {
+  font-size: 14px;
+  color: var(--fifa-gray-600);
+  margin-bottom: 24px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fifa-gray-600);
+}
+
+.form-field input,
+.form-field select {
+  padding: 12px 14px;
+  border: 1px solid var(--fifa-gray-200);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--fifa-gray-800);
+  background: var(--fifa-white);
+  transition: border-color 0.2s;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+  outline: none;
+  border-color: var(--fifa-gold);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.2);
+}
+
+.transfer-summary {
+  background: var(--fifa-gray-100);
+  padding: 20px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 24px;
+}
+
+.transfer-summary h3 {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--fifa-gray-600);
+  margin-bottom: 12px;
+}
+
+.transfer-summary ul { list-style: none; }
+.transfer-summary li {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--fifa-gray-200);
+  font-size: 14px;
+  gap: 16px;
+}
+.transfer-summary li:last-child { border-bottom: none; }
+.transfer-summary li span { color: var(--fifa-gray-600); flex-shrink: 0; }
+
+.transfer-sidebar {
+  background: var(--fifa-white);
+  padding: 24px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 96px;
+}
+
+.transfer-sidebar h3 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--fifa-navy);
+  margin-bottom: 16px;
+}
+
+.transfer-history { list-style: none; }
+
+.transfer-history li {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--fifa-gray-200);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.transfer-direction {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.transfer-history .sent .transfer-direction { color: var(--fifa-navy); }
+.transfer-history .received .transfer-direction { color: var(--fifa-green); }
+
+.transfer-party, .transfer-date {
+  font-size: 12px;
+  color: var(--fifa-gray-600);
+}
+
+.selected-ticket-preview { max-width: 400px; }
+
+/* Login */
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 200px);
+}
+
+.login-card {
+  background: var(--fifa-white);
+  padding: 48px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 420px;
+}
+
+.login-header { text-align: center; margin-bottom: 32px; }
+.login-header .brand-icon { display: inline-block; margin-bottom: 16px; }
+.login-header h1 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  color: var(--fifa-navy);
+  margin-bottom: 8px;
+}
+.login-header p { color: var(--fifa-gray-600); font-size: 14px; }
+
+.login-footer {
+  margin-top: 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.link-btn, .demo-btn {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--fifa-gray-600);
+}
+.link-btn:hover { color: var(--fifa-navy); }
+.demo-btn {
+  color: var(--fifa-gold);
+  font-weight: 600;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  background: rgba(201, 162, 39, 0.1);
+}
+.demo-btn:hover { background: rgba(201, 162, 39, 0.2); }
+
+/* Alerts & empty states */
+.alert {
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+.alert-success { background: #e6f7ed; color: #0d6b3a; border: 1px solid #b8e6cc; }
+.alert-error { background: #fdecea; color: #b71c1c; border: 1px solid #f5c6c6; }
+
+.empty-state { text-align: center; color: var(--fifa-gray-600); padding: 48px; }
+
+.empty-state-card {
+  background: var(--fifa-white);
+  padding: 48px;
+  border-radius: var(--radius);
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+.empty-state-card h2 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  color: var(--fifa-navy);
+  margin-bottom: 8px;
+}
+.empty-state-card p { color: var(--fifa-gray-600); margin-bottom: 24px; }
+
+.muted { font-size: 13px; color: var(--fifa-gray-400); }
+
+/* Footer */
+.site-footer {
+  background: var(--fifa-navy);
+  color: rgba(255,255,255,0.7);
+  margin-top: auto;
+}
+
+.footer-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 48px 24px 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+}
+
+.footer-brand strong {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--fifa-white);
+  display: block;
+  margin-bottom: 8px;
+}
+.footer-brand p { font-size: 14px; line-height: 1.6; }
+
+.footer-links {
+  display: flex;
+  gap: 48px;
+}
+
+.footer-links h4 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fifa-gold);
+  margin-bottom: 12px;
+}
+
+.footer-links div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.footer-links a:hover { color: var(--fifa-white); }
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 20px 24px;
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .match-detail-content { grid-template-columns: 1fr; }
+  .purchase-panel { border-left: none; border-top: 1px solid var(--fifa-gray-200); }
+  .transfer-layout { grid-template-columns: 1fr; }
+  .transfer-sidebar { position: static; }
+  .footer-inner { grid-template-columns: 1fr; }
+  .main-nav { display: none; }
+}
+
+@media (max-width: 600px) {
+  .hero { padding: 60px 24px 32px; margin: -32px -24px 32px; }
+  .hero-stats { gap: 24px; }
+  .login-card { padding: 32px 24px; }
+  .header-inner { padding: 0 16px; }
+  .brand-text { display: none; }
+}
+
+/* Redesigned My Tickets Page Styles */
+
+.purple-alert {
+  background: #f6f0fa;
+  border: 1px solid #e9dff5;
+  color: #5c2f8f;
+  padding: 14px 20px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.purple-alert-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #5c2f8f;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.purple-alert a {
+  text-decoration: underline;
+  font-weight: 600;
+  color: #5c2f8f;
+}
+
+.tickets-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (max-width: 992px) {
+  .tickets-layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+.tickets-main {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Match group card */
+.match-group-card {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid var(--fifa-gray-200);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.match-group-header-block {
+  padding: 24px;
+  border-bottom: 1px solid var(--fifa-gray-200);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+@media (max-width: 600px) {
+  .match-group-header-block {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.match-group-info {
+  flex: 1;
+}
+
+.match-group-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.match-group-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  color: var(--fifa-gray-600);
+  font-size: 14px;
+}
+
+.match-group-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.match-group-meta-icon {
+  color: var(--fifa-gray-400);
+  display: flex;
+  align-items: center;
+}
+
+.btn-add-calendar {
+  background: #ffffff;
+  color: var(--fifa-gray-800);
+  border: 1px solid var(--fifa-gray-200);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+  align-self: flex-start;
+}
+
+.btn-add-calendar:hover {
+  background: var(--fifa-gray-100);
+  border-color: var(--fifa-gray-400);
+}
+
+.match-group-tickets-container {
+  padding: 24px;
+  background: #fafafa;
+}
+
+.match-group-tickets-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--fifa-gray-800);
+  margin-bottom: 16px;
+}
+
+.ticket-rows-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Wide Ticket Row */
+.ticket-row-item {
+  background: #ffffff;
+  border: 1px solid var(--fifa-gray-200);
+  border-radius: 8px;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  transition: box-shadow 0.2s;
+}
+
+.ticket-row-item:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+@media (max-width: 768px) {
+  .ticket-row-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+}
+
+.ticket-row-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ticket-row-subtitle {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--fifa-gray-400);
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.ticket-row-seat-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.ticket-row-status-msg {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #d97706; /* amber */
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.status-dot-amber {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d97706;
+}
+
+.ticket-row-right-panel {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .ticket-row-right-panel {
+    justify-content: space-between;
+  }
+}
+
+/* Mock Barcode */
+.ticket-row-barcode-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.barcode-stripes {
+  display: flex;
+  height: 28px;
+  width: 120px;
+  background: #ffffff;
+  align-items: stretch;
+}
+
+.barcode-stripe {
+  background: #000000;
+}
+
+.barcode-text-id {
+  font-size: 10px;
+  color: var(--fifa-gray-400);
+  letter-spacing: 0.12em;
+}
+
+.btn-ticket-edit {
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid var(--fifa-gray-200);
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-ticket-edit:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+/* Sidebar navigation & widgets */
+.sidebar-box {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid var(--fifa-gray-200);
+  box-shadow: var(--shadow);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.sidebar-box.compact {
+  padding: 0;
+  overflow: hidden;
+}
+
+.sidebar-menu-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-menu-item {
+  padding: 16px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--fifa-gray-800);
+  border-bottom: 1px solid var(--fifa-gray-100);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: background 0.2s;
+}
+
+.sidebar-menu-item:last-child {
+  border-bottom: none;
+}
+
+.sidebar-menu-item:hover {
+  background: #fafafa;
+}
+
+.sidebar-menu-item.active {
+  font-weight: 700;
+  background: #f4f6f9;
+  color: #000000;
+}
+
+.sidebar-menu-icon {
+  color: var(--fifa-gray-400);
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+
+.sidebar-sponsor-visa {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 12px 0;
+}
+
+.visa-logo-text {
+  font-size: 32px;
+  font-weight: 800;
+  font-style: italic;
+  color: #1a1f71; /* Visa brand blue */
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.visa-logo-text span {
+  color: #f7b600; /* Visa brand yellow */
+}
+
+.visa-subtitle {
+  font-size: 11px;
+  color: var(--fifa-gray-600);
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Hospitality Promo */
+.sidebar-promo-hospitality {
+  background: linear-gradient(135deg, #7b1317 0%, #a21a1e 100%);
+  color: #ffffff;
+  padding: 28px 24px;
+  border-radius: 12px;
+  text-align: center;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.sidebar-promo-hospitality:hover {
+  transform: translateY(-2px);
+}
+
+.hospitality-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.hospitality-text {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0.03em;
+}
+
+/* Modal Dialog */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.modal-dialog {
+  background: #ffffff;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  animation: modalFadeIn 0.2s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--fifa-gray-200);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #000000;
+  margin: 0;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--fifa-gray-400);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.modal-close-btn:hover {
+  background: var(--fifa-gray-100);
+  color: #000000;
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.modal-footer {
+  padding: 16px 24px;
+  background: var(--fifa-gray-100);
+  border-top: 1px solid var(--fifa-gray-200);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
